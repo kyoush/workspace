@@ -12,6 +12,6 @@ loop = 10;
 tau = 36;
 noise = GenNoiseWave(Fs*T, 1);
 sig = zeros(Fs*T + tau, 2);
-sig(:, 1) = [noise zeros(1, tau)];
+sig(1:Fs*T, 1) = noise;
 sig(tau+1:end, 2) = noise;
 sound(sig, Fs)

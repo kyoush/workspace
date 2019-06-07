@@ -2,25 +2,44 @@ clear
 close all
 
 Fs = 44100;
-T = 10;
-L = 5*Fs;
+T = 0.5;
+loop = 15;
 
 noise = GenNoiseWave(Fs*T, 1);
-
-sig = zeros(Fs*T, 2);
-sig(:, 1) = noise .* 0.6;
-
-w = triang(L)';
-
-for i = 1:(Fs*T)/L
-    sig(i*L-L+1:i*L, 2) = noise(i*L-L+1:i*L) .* w;
-    tmp(i,:) = [i*L-L+1:i*L];
+for i = 1 : 3000
+    noise(i) = noise(i) * i / 3000;
+    noise(Fs * T - i + 1) = noise(Fs * T - i + 1) .* (i / 3000);
 end
-sound(sig, Fs)
 
+h1 = animatedline('Marker', 'o');
+movegui(h1,'northwest')
+grid on
+ylim([-50 50])
+xlim([1 loop])
+ylabel("ILD [dB]")
 
-figure(1)
-plot(sig(:,1))
-hold on
-plot(sig(:,2))
-ylim([-1.0 1.0])
+for i = 1:loop
+    sig(:, 1) = noise * (i / loop);
+    sig(:, 2) = noise * (1 - i / loop);
+    sound(sig, Fs)
+    pause(T)
+    
+    if i == 10
+        f3 = figure(3);
+        movegui(f3, 'center')
+        plot(sig(:, 1))
+        hold on
+        plot(sig(:, 2))
+        xlim([1 Fs*T])
+    end
+    
+    ild = bandpower(sig(:, 1)) / bandpower(sig(:, 2));
+    ild = 20 * log10(ild);
+    addpoints(h1, i, ild)
+    drawnow
+end
+
+figure(2)
+plot(noise)
+grid on
+xlim([1 Fs*T])
