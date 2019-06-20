@@ -1,0 +1,23 @@
+function ild(db)
+Fs = 44100;
+T = 2;
+noise = GenNoiseWave(Fs*T, 1);
+sig = zeros(Fs*T, 2);
+disp(bandpower(noise))
+powersig = bandpower(noise) * 10^
+if db > 0
+    sig(:, 1) = noise;
+    powersig_l = bandpower(noise) * 10^(db/20);
+    disp(powersig_l)
+    disp(power2const(powersig_l))
+    sig(:, 2) = noise .* power2const(powersig_l);
+else
+    sig(:, 2) = noise;
+    powersig_r = bandpower(noise) * 10^(db/20);
+    disp(powersig_r)
+    disp(power2const(powersig_r))
+    sig(:, 1) = noise .* power2const(powersig_r);
+end
+
+sound(sig, Fs)
+end

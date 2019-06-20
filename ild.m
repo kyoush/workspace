@@ -1,13 +1,20 @@
-clear
-close all
-
-Fs = 44100;
+function ild(db)
+[noise, Fs] = audioread('noise.wav');
 T = 2;
 
-noise = GenNoiseWave(Fs*T, 1);
-
 sig = zeros(Fs*T, 2);
-sig(:, 1) = noise(:);
+disp(bandpower(noise))
+powersig = bandpower(noise) / (10^(abs(db)/20));
+down = power2const(powersig);
+disp(powersig)
+disp(down)
+if db > 0
+    sig(:, 1) = noise;
+    sig(:, 2) = noise .* down;
+else
+    sig(:, 1) = noise .* down;
+    sig(:, 2) = noise;
+end
 
-sig(:, 2) = noise .* 0.3;
 sound(sig, Fs)
+end

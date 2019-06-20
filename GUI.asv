@@ -1,0 +1,44 @@
+%---------------------------------------------
+%
+% GUI Program
+%
+% by K.Kamura  06/02/2019
+% 
+%---------------------------------------------
+clear
+close all force
+
+X_MIN = 200;
+Y_MIN = 200;
+WIDTH = 600;
+HEIGHT = 400;
+
+Figure_position = [X_MIN Y_MIN WIDTH HEIGHT];
+
+H0 = uifigure('Position', Figure_position,...
+    'NumberTitle','off',...
+    'Name','ITD & ILD',...
+    'MenuBar', 'none',...
+    'Color','w',...
+    'Units','pixels',...
+    'Visible','on');
+v = get(0, 'MonitorPosition');
+
+sld = uislider(H0,...
+    'Position', [WIDTH/2-250 HEIGHT-100 500 3],...
+    'ValueChangedFcn',@(sld, event) ild(sld.Value));
+sld.Limits = [-17 17];
+sld.Value = 0;
+
+txtareaild = uitextarea(H0,...
+    'Position' ,[WIDTH/2 HEIGHT-50 500 3]);
+
+sld_itd = uislider(H0,...
+    'Position', [WIDTH/2-250 75 500 3],...
+    'ValueChangedFcn',@(sld_itd, event) itd(sld_itd.Value));
+sld_itd.Limits = [-800 800];
+sld_itd.Value = 0;
+
+t = uicontrol(H0,'Style','text',...
+                'String','Select a data set.',...
+                'Position',[30 50 130 30]);

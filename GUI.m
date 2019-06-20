@@ -3,34 +3,56 @@
 % GUI Program
 %
 % by K.Kamura  06/02/2019
-%Å@ 
+% 
 %---------------------------------------------
 clear
-close all
+close all force
 
-set(0, 'Units', 'pixels');
-v = get(0, 'MonitorPosition');
-
-Fs = 44100;
-
-X_MIN = 100;
-Y_MIN = 100;
-WIDTH = 700;
-HEIGHT = 500;
-
-rate = 1.7;
+X_MIN = 200;
+Y_MIN = 200;
+WIDTH = 600;
+HEIGHT = 400;
 
 Figure_position = [X_MIN Y_MIN WIDTH HEIGHT];
 
-
 H0 = uifigure('Position', Figure_position,...
     'NumberTitle','off',...
-    'Name','GUI',...
+    'Name','ITD & ILD',...
     'MenuBar', 'none',...
     'Color','w',...
     'Units','pixels',...
     'Visible','on');
 v = get(0, 'MonitorPosition');
 
-sld = uislider(H0);
-sld.Limits = [0 1.5];
+label1 = uilabel(H0,...
+    'Position', [WIDTH/2-10 HEIGHT-100 500 100],...
+    'Text', 'ILD');
+label1.FontSize = 20;
+
+label2 = uilabel(H0,...
+    'Position', [WIDTH/2-5 HEIGHT-325 500 100],...
+    'Text', 'ITD');
+label2.FontSize = 20;
+
+label3 = uilabel(H0,...
+    'Position', [WIDTH-40 HEIGHT-150 100 100],...
+    'Text', '[dB]');
+
+label4 = uilabel(H0,...
+    'Position', [WIDTH-40 25 100 100],...
+    'Text', '[É s]');
+
+sld = uislider(H0,...
+    'Position', [WIDTH/2-250 HEIGHT-100 500 3],...
+    'ValueChangedFcn',@(sld, event) ilditd(sld.Value, sld_itd.Value));
+sld.Limits = [-20 20];
+sld.Value = 0;
+
+txtareaild = uitextarea(H0,...
+    'Position' ,[WIDTH/2 HEIGHT-50 500 3]);
+
+sld_itd = uislider(H0,...
+    'Position', [WIDTH/2-250 75 500 3],...
+    'ValueChangedFcn',@(sld_itd, event) ilditd(sld.Value, sld_itd.Value));
+sld_itd.Limits = [-800 800];
+sld_itd.Value = 0;

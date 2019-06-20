@@ -1,16 +1,20 @@
-tmp = 1;
-rd = rand();
-rd = int8(rd * 10.^tmp);
+clear
+close all
+Fs = 44100;
+T = 2;
+org = GenNoiseWave(Fs*T, 1);
+sig = zeros(Fs*T, 2);
+sig(:, 1) = org;
 
-for i = 1 : 100
-    disp([i, fix(i/10), tmp, rd])
-    if fix(i/10) > tmp
-        tmp = fix(i/10);
-        rd = int8(rand() * 10.^tmp);
-%         disp([tmp, rd])
-    end
-    if i == rd
-        disp([i, rd])
-        disp(sqrt(i))
-    end
+figure(1);
+grid on
+xlim([1 10])
+ylim([0 17])
+
+l = 50;
+power = zeros(l, 1);
+for i = 1:l
+    power(i) = bandpower(org .* (1/i));
 end
+disp(power)
+plot(power)
