@@ -14,13 +14,13 @@ end
 h1 = animatedline('Marker', 'o');
 movegui(h1,'northwest')
 grid on
-ylim([-50 50])
+ylim([-23 23])
 xlim([1 loop])
 ylabel("ILD [dB]")
 
 for i = 1:loop
-    sig(:, 1) = noise * (i / loop);
-    sig(:, 2) = noise * (1 - i / loop);
+    sig(:, 1) = noise .* 0.7;
+    sig(:, 2) = noise .* (i/loop);
     sound(sig, Fs)
     pause(T)
     
@@ -33,7 +33,7 @@ for i = 1:loop
         xlim([1 Fs*T])
     end
     
-    ild = bandpower(sig(:, 1)) / bandpower(sig(:, 2));
+    ild = rms(sig(:, 2)) / rms(sig(:, 1));
     ild = 20 * log10(ild);
     addpoints(h1, i, ild)
     drawnow
