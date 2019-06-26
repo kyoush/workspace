@@ -1,20 +1,14 @@
 clear
 close all
-Fs = 44100;
-T = 2;
-org = GenNoiseWave(Fs*T, 1);
-sig = zeros(Fs*T, 2);
-sig(:, 1) = org;
+[sig, Fs] = audioread('noise.wav');
 
-figure(1);
-grid on
-xlim([1 10])
-ylim([0 17])
-
-l = 50;
-power = zeros(l, 1);
-for i = 1:l
-    power(i) = bandpower(org .* (1/i));
+c = 20;
+db = zeros(1, c);
+x = 1:c;
+x = x ./ c;
+for i = 1:c
+    tmp = sig(:, 1) .* x(i);
+    db(i) = 20 * log10(bandpower(sig(:, 1))/bandpower(tmp));
 end
-disp(power)
-plot(power)
+x(length(x)) = [];
+db(length(db)) = [];

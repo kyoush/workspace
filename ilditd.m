@@ -2,13 +2,11 @@ function sig2 = ilditd(db, delta, ax)
 [noise, Fs] = audioread('noise.wav');
 T = 1;
 
-disp(db)
-disp(delta)
-
 %% ild
 sig = zeros(Fs*T, 2);
-powersig = bandpower(noise) / (10^(abs(db)/20));
-down = power2const(powersig);
+% powersig = bandpower(noise) ./ (10^(abs(db)/20));
+% down = power2const(powersig);
+down = power2const(abs(db));
 
 if db > 0
     sig(:, 1) = noise;
@@ -47,7 +45,7 @@ i = i';
 h1 = plot(ax, i, sig2(i, 1), 'b');
 hold(ax, 'on')
 h2 = plot(ax, i, sig2(i, 2), 'r');
-legend(ax, [h1, h2], 'L-channel', 'R-channel', 'location', 'northwest')
+legend(ax, [h1, h2], 'L-channel', 'R-channel', 'location', 'southwest')
 
 if db < 0
     h = get(ax, 'children');
@@ -55,10 +53,23 @@ if db < 0
     ind = (h == hg);
     newh = [h(ind), h(~ind)];
     set(ax, 'children', newh);
+else
+    h = get(ax, 'children');
+    hg = findobj(ax, 'type', 'line', 'color', 'r');
+    ind = (h == hg);
+    newh = [h(ind), h(~ind)];
+    set(ax, 'children', newh);
 end 
 
 str = num2str(a);
-str = [str ' [dB]'];
-text(ax, 3400, 0.75, str, 'Color', 'k', 'fontsize', 16);
+str = ['ILD : ' str ' [dB]'];
+text(ax, 3350, 0.75, str, 'Color', 'k', 'fontsize', 16);
+
+str2 = num2str(sign(delta) * (tau/Fs) * 1000000);
+str2 = ['ITD : ' str2 ' [ƒÊs]'];
+text(ax, 3350, -0.75, str2, 'Color', 'k', 'fontsize', 16);
+
 hold(ax, 'off')
+save('temp.mat');
+
 end
