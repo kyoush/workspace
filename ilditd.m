@@ -15,6 +15,7 @@ else
     sig(:, 1) = noise .* down;
     sig(:, 2) = noise;
 end
+
 %% itd
 tau = round(abs(delta) * Fs * 0.000001);
 sig2 = zeros(Fs*T + tau, 2);
