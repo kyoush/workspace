@@ -22,9 +22,14 @@ end
 sound(sig, Fs)
 
 %% dB calc
-l_pow = bandpower(sig(:, 1));
-r_pow = bandpower(sig(:, 2));
-a = 20 * log10(l_pow/r_pow);
+% l_pow = bandpower(sig(:, 1));
+% r_pow = bandpower(sig(:, 2));
+% a = 20 * log10(l_pow/r_pow);
+
+a1=rms(sig(:,1));
+a2=rms(sig(:,2));
+a=20*log10(a1/a2);
+
 
 %% plot
 i = 3000:3500;
@@ -60,8 +65,8 @@ text(ax, 3350, -0.75, str2, 'Color', 'k', 'fontsize', 16);
 hold(ax, 'off')
 save('temp.mat');
 
+    % ÉpÉèÅ[[dB]Ç©ÇÁíËêî
     function const = power2const(x)
-        const = exp(-0.05756*x);
+        const = exp(-0.1151*x);
     end
-
 end
