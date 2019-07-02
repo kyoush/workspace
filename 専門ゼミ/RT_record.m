@@ -18,7 +18,7 @@ subplot(H1)
     set(H1, 'ylim', [-1 1]);
     set(H1, 'xlim', [0 RecordingTime]);
     h1 = animatedline('color', 'k');
-    
+
 subplot(H2)
  freq_vector = (1:frame_length/2+1)*dF/1000;
  h2 = semilogx(H2, NaN, NaN, 'r-');
