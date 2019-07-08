@@ -8,8 +8,8 @@ for i = 1:length(noise)/frame_length - 1
     tau = round(abs(delta.Value) * Fs * 0.000001);
     %% ITD
     tmp = frame_length*i:frame_length*i + 4095;
-%     disp(delta.Value)
-%     disp(db.Value)
+%   disp(delta.Value)
+%   disp(db.Value)
     if delta.Value > 0
         sig(:, 1) = noise(tmp + tau);
         sig(:, 2) = noise(tmp);

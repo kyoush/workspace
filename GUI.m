@@ -124,7 +124,7 @@ else
     ind = (h == hg);
     newh = [h(ind), h(~ind)];
     set(ax, 'children', newh);
-end 
+end
 
 str = num2str(a);
 str = ['ILD : ' str ' [dB]'];
