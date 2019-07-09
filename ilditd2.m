@@ -2,18 +2,30 @@ function aDW = ilditd2(db, delta, ildlabel, itdlabel, stop)
 frame_length = 4096;
 Fs = 44100;
 aDW = audioDeviceWriter;
+flag = 1;
+tmp.sig = [];
+tmp.tau = 0;
 
 while(stop.Value == 0)
     noise = GenNoiseWave(frame_length + 441, 1);
     tau = round(abs(delta.Value) * Fs * 0.000001);
     
+    if flag == 1
+        for i = 1:3000
+            noise(i) = noise(i) * (i/3000);
+        end
+        flag = 0;
+    end
+    
     %% ITD
     if delta.Value > 0
         sig(:, 1) = noise(tau + 1:frame_length+tau);
         sig(:, 2) = noise(1:frame_length);
+        tmp.LR = 1;
     else
         sig(:, 1) = noise(1:frame_length);
         sig(:, 2) = noise(tau + 1:frame_length+tau);
+        tmp.LR = 2;
     end
     
     %% ILD
@@ -35,8 +47,18 @@ while(stop.Value == 0)
     
     itdlabel.Text = [num2str(round(a)) ' [ƒÊs]'];
     
+    %% tmp
+    if tmp.LR == 1 && tmp.tau > 0
+        sig(1:tmp.tau, 2) = tmp.sig';
+    else if tmp.LR == 2 && tmp.tau > 0
+        sig(1:tmp.tau, 1) = tmp.sig';
+    end
+    tmp.sig = noise(frame_length:frame_length+tau);
+    tmp.tau = tau;
+    
     aDW(sig);
-    pause(0.091)
+    pause(frame_length/Fs)
+%     pause(0.087)
 end
 stop.Value = 0;
 release(aDW);
