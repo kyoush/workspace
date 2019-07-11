@@ -91,6 +91,7 @@ button_play = uibutton(H0,...
     'Text', 'Play',...
     'ButtonPushedFcn',@(button_play, event) ilditd2(sld_ild, sld_itd, label5, label6, button_stop));
 
+<<<<<<< HEAD
 %% Answer Button
 ax = uiaxes(H0,...
     'Pos', [50 0 500 390],...
@@ -152,6 +153,8 @@ end
 end
 
 %% スライダの値を0にリセットする関数
+=======
+>>>>>>> b348d25435a5932f225e4441d5c4497cfd6f7459
 function reset_value(obj)
 obj.Value = 0;
 end

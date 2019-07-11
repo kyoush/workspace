@@ -3,8 +3,11 @@ frame_length = 4096;
 Fs = 44100;
 aDW = audioDeviceWriter;
 flag = 1;
+<<<<<<< HEAD
 % tmp.sig = [];
 % tmp.tau = 0;
+=======
+>>>>>>> b348d25435a5932f225e4441d5c4497cfd6f7459
 
 while(stop.Value == 0)
     noise = GenNoiseWave(frame_length + 441, 1);
@@ -56,7 +59,11 @@ while(stop.Value == 0)
 %     
     aDW(sig);
 %     pause(frame_length/Fs)
+<<<<<<< HEAD
     pause(0.086)
+=======
+    pause(0.091)
+>>>>>>> b348d25435a5932f225e4441d5c4497cfd6f7459
 end
 stop.Value = 0;
 release(aDW);
