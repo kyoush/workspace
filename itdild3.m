@@ -1,7 +1,12 @@
 function itdild3(db, delta, ildlabel, itdlabel, stop, waveform)
 global store
+<<<<<<< HEAD
 frame_length = 2048;
 Fs = 48000;
+=======
+frame_length = 4092;
+Fs = 46000;
+>>>>>>> 99844f815db7489b6d33e496e0603d3b5562df8f
 AP = dsp.AudioPlayer('OutputNumUnderrunSamples', true);
 aDW = audioDeviceWriter;
 flag = 1;
@@ -63,7 +68,14 @@ if waveform == 1
         tmp.sig = noise(frame_length:frame_length+tau) ./ const;
         tmp.tau = tau;
         j = j + 1;
+<<<<<<< HEAD
         AP(sig);
+=======
+        a = aDW(sig);
+        if a > 0
+            disp('delay')
+        end
+>>>>>>> 99844f815db7489b6d33e496e0603d3b5562df8f
         pause(bufferLatency)
 %         pause(0.0000000001)
     end

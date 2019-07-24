@@ -109,7 +109,11 @@ button_play = uibutton(H0,...
 XMIN = v(3) * 0.49;
 YMIN = v(4) * 0.1;
 WIDTH = v(3) * 0.5;
+<<<<<<< HEAD
 HEIGHT = v(4) * 0.6;
+=======
+HEIGHT = WIDTH * 4 / 5;
+>>>>>>> 99844f815db7489b6d33e496e0603d3b5562df8f
 figpos = [XMIN YMIN WIDTH HEIGHT];
 global flag
 global plt
