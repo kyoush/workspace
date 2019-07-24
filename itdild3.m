@@ -1,12 +1,10 @@
 function itdild3(db, delta, ildlabel, itdlabel, stop, waveform)
 global store
-<<<<<<< HEAD
-frame_length = 2048;
-Fs = 48000;
-=======
+global h
+global plt
+% clf plt
 frame_length = 4092;
-Fs = 46000;
->>>>>>> 99844f815db7489b6d33e496e0603d3b5562df8f
+Fs = 48000;
 AP = dsp.AudioPlayer('OutputNumUnderrunSamples', true);
 aDW = audioDeviceWriter;
 flag = 1;
@@ -16,8 +14,19 @@ t_pause = 0.085;
 t_pause = 4096/Fs;
 bufferLatency = frame_length / Fs;
 j = 1;
+pos = h.Center;
+save = [];
 if waveform == 1
     while(stop.Value == 0)
+        if h.Selected == 1
+            pos_old = pos;
+            pos = h.Center;
+            if pos_old == pos
+                save = [save; pos];
+                disp(pos)
+                h.Selected = 0;
+            end
+        end
         noise = wgn(frame_length + 441, 1, 1);
         noise = 0.5 * noise ./ 4.267;
         tau = round(abs(delta.Value) * Fs * 0.000001);
@@ -68,23 +77,22 @@ if waveform == 1
         tmp.sig = noise(frame_length:frame_length+tau) ./ const;
         tmp.tau = tau;
         j = j + 1;
-<<<<<<< HEAD
-        AP(sig);
-=======
+%         AP(sig);
         a = aDW(sig);
         if a > 0
             disp('delay')
         end
->>>>>>> 99844f815db7489b6d33e496e0603d3b5562df8f
         pause(bufferLatency)
 %         pause(0.0000000001)
     end
 else
-    freq = 1050;
+    freq = 416;
+%     freq = sld.Value;
     taper = 3000;
     w = hann(taper);
     tmp = zeros(taper/2, 2);
     while(stop.Value == 0)
+        freq = sld.Value;
         x = 1:frame_length + 1441;
         x = 0.5 * sin((2*pi)/(Fs/freq) * x)';
         tau = round(abs(delta.Value) * Fs * 0.000001);
@@ -118,8 +126,11 @@ else
         pause(bufferLatency)
     end
 end
+
 stop.Value = 0;
-% release(aDW);
-release(AP)
-plot(store.xpos, store.ypos, 'b.', 'MarkerSize', 100)
+release(aDW);
+% release(AP)
+a = size(save);
+for i = 1:a(1)
+    plt(i) = plot(save(i, 1), save(i, 2), 'b.', 'MarkerSize', 100)
 end
