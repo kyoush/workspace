@@ -3,7 +3,7 @@ global store
 global h
 global plt
 % clf plt
-frame_length = 4092;
+frame_length = 2048;
 Fs = 48000;
 AP = dsp.AudioPlayer('OutputNumUnderrunSamples', true);
 aDW = audioDeviceWriter;
@@ -28,7 +28,7 @@ if waveform == 1
             end
         end
         noise = wgn(frame_length + 441, 1, 1);
-        noise = 0.5 * noise ./ 4.267;
+        noise = 0.5 * noise ./ 0.4267;
         tau = round(abs(delta.Value) * Fs * 0.000001);
         if flag == 1
             for i = 1:1000
@@ -77,11 +77,11 @@ if waveform == 1
         tmp.sig = noise(frame_length:frame_length+tau) ./ const;
         tmp.tau = tau;
         j = j + 1;
-%         AP(sig);
-        a = aDW(sig);
-        if a > 0
-            disp('delay')
-        end
+        a = AP(sig);
+%         a = aDW(sig);
+%         if a > 0
+%             disp('delay')
+%         end
         pause(bufferLatency)
 %         pause(0.0000000001)
     end
