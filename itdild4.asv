@@ -37,7 +37,7 @@ if waveform == 1
             end
             flag = 0;
         end
-
+        
         %% ITD
         if delta.Value > 0
             sig = [filter(noise) noise];

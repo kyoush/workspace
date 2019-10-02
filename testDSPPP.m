@@ -20,10 +20,14 @@ reverb = reverberator( ...
     'PreDelay',0.5, ...
     'WetDryMix',0.4);
 
+sum = 0;
 %% Audio stream loop
 while ~isDone(fileReader)
+    sum = sum + frameLength;
+    disp(sum/fileReader.SampleRate)
     signal = fileReader();
     reverbSignal = reverb(signal);
+    
     deviceWriter(reverbSignal);
     scope([signal, mean(reverbSignal, 2)])
 end

@@ -1,7 +1,7 @@
 clear
 close all force
 
-%% A. Create imput and output objects
+%% A. Create input and output objects
 fileReader = dsp.AudioFileReader(...
     'speech_dft.mp3',...
     'SamplesPerFrame', 64,...
@@ -21,7 +21,7 @@ parameterTuningUI(x, 0, 5);
 %% D. Process audio in a loop
 while ~isDone(fileReader)
     audioIn = fileReader();
-    
+    disp(x.value)
     drawnow limitrate
     audioOut = audioIn.*x.value;
     
