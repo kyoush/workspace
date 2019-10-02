@@ -67,29 +67,30 @@ if waveform == 1
         aDW(sig);
     end
 else
-    freq = 416;
-%     freq = sld.Value;
-    taper = 3000;
-    w = hann(taper);
-    tmp = zeros(taper/2, 2);
+    filter = dsp.FIRFilter();
+    sine = dsp.SineWave(...
+        'Amplitude', 0.5,...
+        'Frequency', 300,...
+        'SampleRate', Fs,...
+        'SamplesPerFrame', frame_length);
     while(stop.Value == 0)
         drawnow limitrate
-        x = 1:frame_length;
-        x = 0.5 * sin((2*pi)/(Fs/freq) * x)';
+%         x = 1:frame_length;
+%         x = 0.5 * sin((2*pi)/(Fs/freq) * x)';
+        x = sine();
         tau = round(abs(delta.Value) * Fs * 0.000001);
-        filter = dsp.FIRFilter();
         filter.Numerator = [zeros(1, tau) 1 zeros(1, 50-tau-1)];
         
         %% ITD
         if delta.Value > 0
-            sig = [x filter(x)];
-        else
             sig = [filter(x) x];
+        else
+            sig = [x filter(x)];
         end
         
         %% ILD
         const = 10^(abs(db.Value)/20);
-        if db.Value > 0
+        if db.Value < 0
             sig(:, 2) = sig(:, 2) ./ const;
         else
             sig(:, 1) = sig(:, 1) ./ const;
@@ -109,7 +110,6 @@ else
         aDW(sig);
     end
 end
-
 stop.Value = 0;
 release(aDW);
 release(fileReader)
