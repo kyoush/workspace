@@ -1,12 +1,10 @@
 function itdild4(db, delta, ildlabel, itdlabel, stop, waveform)
 global h
 global plt
-% clf plt
 frame_length = 2048;
-% frame_length = 64;
 Fs = 44100;
 fileReader = dsp.AudioFileReader(...
-    'whitenoise.wav',...
+    'wn2.wav',...
     'SamplesPerFrame', frame_length);
 aDW = audioDeviceWriter(...
     'SampleRate', fileReader.SampleRate);
@@ -64,6 +62,8 @@ if waveform == 1
 
         itdlabel.Text = [num2str(round(a)) ' [É s]'];
 
+        
+        
         aDW(sig);
     end
 else

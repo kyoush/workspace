@@ -133,13 +133,6 @@ hold on
 
 h = images.roi.Circle(gca, 'Center', [448 380], 'Radius', 50, 'FaceAlpha', 1);
 
-% 
-% b2 = uicontrol(f,...
-%     'Style', 'pushbutton',...
-%     'Pos', [40 10 80 30],...
-%     'String', 'Localization',...
-%     'Callback', 'Localization(WIDTH, HEIGHT, f, h, sld_itd, sld_ild)');
-
 %% Bothボタンが押されたとき、itdのスライダも同時に動かす関数
 function updatesld_itd(keep, sld_itd, sld_ild, event)
 if keep.Value == 1
