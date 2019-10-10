@@ -4,15 +4,19 @@ global plt
 frame_length = 2048;
 Fs = 44100;
 fileReader = dsp.AudioFileReader(...
-    'wn2.wav',...
+    'whitenoise.wav',...
     'SamplesPerFrame', frame_length);
 aDW = audioDeviceWriter(...
-    'SampleRate', fileReader.SampleRate);
+    'SampleRate', Fs);
+cn = dsp.ColoredNoise(...
+    'Color', 'white',...
+    'SamplesPerFrame', frame_length);
 flag = 1;
 pos = h.Center;
 save = [];
 filter = dsp.FIRFilter();
 length_coeff = 50;
+tmp = 0;
 if waveform == 1
     while(isDone(fileReader) == 0 && stop.Value == 0)
         if h.Selected == 1
@@ -21,10 +25,16 @@ if waveform == 1
             if pos_old == pos
                 save = [save; pos];
                 disp(pos)
+                disp(db.Value)
+                disp(delta.Value)
                 h.Selected = 0;
             end
         end
-        noise = fileReader();
+%         noise = fileReader();
+%         noise = cn();
+        noise = wgn(1, frame_length, 1);
+        noise = noise .* 0.1;
+        noise = noise';
         drawnow limitrate
         tau = round(abs(delta.Value) * Fs * 0.000001);
         filter.Numerator = [zeros(1, tau) 1 zeros(1, length_coeff-tau-1)];
@@ -46,9 +56,11 @@ if waveform == 1
         %% ILD
         const = 10^(abs(db.Value)/20);
         if db.Value < 0
+            sig(:, 1) = sig(:, 1) .* const;
             sig(:, 2) = sig(:, 2) ./ const;
         else
             sig(:, 1) = sig(:, 1) ./ const;
+            sig(:, 2) = sig(:, 2) .* const;
         end
         
         %% update label
@@ -62,8 +74,6 @@ if waveform == 1
 
         itdlabel.Text = [num2str(round(a)) ' [ƒÊs]'];
 
-        
-        
         aDW(sig);
     end
 else
@@ -109,6 +119,7 @@ else
         
         aDW(sig);
     end
+    release(sine)
 end
 stop.Value = 0;
 release(aDW);
