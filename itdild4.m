@@ -30,11 +30,11 @@ if waveform == 1
                 h.Selected = 0;
             end
         end
-%         noise = fileReader();
+        noise = fileReader();
 %         noise = cn();
-        noise = wgn(1, frame_length, 1);
-        noise = noise .* 0.1;
-        noise = noise';
+%         noise = wgn(1, frame_length, 1);
+%         noise = noise .* 0.1;
+%         noise = noise';
         drawnow limitrate
         tau = round(abs(delta.Value) * Fs * 0.000001);
         filter.Numerator = [zeros(1, tau) 1 zeros(1, length_coeff-tau-1)];
